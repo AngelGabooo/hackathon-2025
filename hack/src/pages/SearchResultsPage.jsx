@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Grid, List, AlertCircle } from 'lucide-react';
 import Header from '../components/organisms/Header';
 import FilterBar from '../components/molecules/FilterBar';
 import MovieGrid from '../components/organisms/MovieGrid';
@@ -68,45 +69,41 @@ const SearchResultsPage = () => {
     navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
   };
 
-  const handleFavoritesClick = () => {
-    navigate('/favorites');
-  };
-
   const totalPages = Math.ceil(totalResults / 10);
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen ${isDarkMode ? 'dark bg-black' : 'bg-gray-50'}`}>
       <Header 
         onSearch={handleSearch}
         onThemeToggle={toggleTheme}
         isDarkMode={isDarkMode}
       />
       
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
         {/* Controles de vista y resultados */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6 gap-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-4 sm:mb-6 gap-3 sm:gap-4">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-1">
               Resultados de: "{query}"
             </h1>
             {!loading && (
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
                 {totalResults > 0 ? `${totalResults} resultados encontrados` : 'No se encontraron resultados'}
               </p>
             )}
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* Selector de vista */}
-            <div className="flex items-center gap-1 border border-gray-300 dark:border-gray-600 rounded-lg p-1">
+            <div className="flex items-center gap-1 border border-red-600/30 rounded-lg p-1">
               <IconButton
-                icon="⧄"
+                icon={<Grid size={14} className="sm:w-4 sm:h-4" />}
                 variant={viewMode === 'grid' ? 'primary' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('grid')}
               />
               <IconButton
-                icon="☰"
+                icon={<List size={14} className="sm:w-4 sm:h-4" />}
                 variant={viewMode === 'list' ? 'primary' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('list')}
@@ -116,7 +113,7 @@ const SearchResultsPage = () => {
         </div>
 
         {/* Filtros */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <FilterBar
             filters={filters}
             onFilterChange={handleFilterChange}
@@ -126,12 +123,12 @@ const SearchResultsPage = () => {
 
         {/* Mensaje de error */}
         {error && (
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
-            <div className="flex items-center gap-3">
-              <div className="text-red-600 text-xl">⚠️</div>
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <AlertCircle size={18} className="sm:w-6 sm:h-6 text-red-600" />
               <div>
-                <h3 className="font-semibold text-red-800 dark:text-red-400">Error en la búsqueda</h3>
-                <p className="text-red-700 dark:text-red-300 text-sm">{error}</p>
+                <h3 className="font-semibold text-red-800 dark:text-red-400 text-sm sm:text-base">Error en la búsqueda</h3>
+                <p className="text-red-700 dark:text-red-300 text-xs sm:text-sm">{error}</p>
               </div>
             </div>
           </div>
@@ -149,7 +146,7 @@ const SearchResultsPage = () => {
 
         {/* Paginación */}
         {totalPages > 1 && !loading && (
-          <div className="mt-8">
+          <div className="mt-6 sm:mt-8">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

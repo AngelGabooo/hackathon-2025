@@ -1,4 +1,5 @@
 import React from 'react';
+import { Loader2 } from 'lucide-react';
 
 const Button = ({ 
   children, 
@@ -9,15 +10,16 @@ const Button = ({
   type = 'button',
   className = '',
   icon,
+  loading = false,
   ...props 
 }) => {
-  const baseClasses = 'font-semibold rounded-xl transition-all duration-300 focus:outline-none focus-neon transform hover:scale-105 active:scale-95';
+  const baseClasses = 'font-semibold rounded-xl transition-all duration-300 focus:outline-none transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2';
   
   const variants = {
-    primary: 'bg-gradient-to-r from-primary-500 to-neon-purple hover:from-primary-600 hover:to-purple-600 text-white shadow-lg hover:shadow-xl',
-    secondary: 'bg-gray-800 hover:bg-gray-700 text-white border border-gray-600 hover:border-gray-500 shadow-lg',
-    ghost: 'bg-transparent hover:bg-white/10 text-gray-700 dark:text-gray-300 border border-transparent hover:border-white/20',
-    neon: 'bg-transparent border border-neon-pink text-neon-pink hover:bg-neon-pink hover:text-white shadow-lg hover:neon-glow',
+    primary: 'bg-gradient-to-r from-red-600 to-red-800 hover:from-red-700 hover:to-red-900 text-white shadow-lg hover:shadow-xl shadow-red-600/25 hover:shadow-red-600/40',
+    secondary: 'bg-gray-800 dark:bg-black hover:bg-gray-700 dark:hover:bg-gray-900 text-white border border-gray-600 dark:border-gray-800 hover:border-gray-500 dark:hover:border-gray-700 shadow-lg',
+    outline: 'bg-transparent border border-red-600/30 text-red-600 hover:bg-red-600 hover:text-white hover:border-red-600 shadow-lg hover:shadow-red-600/20',
+    ghost: 'bg-transparent hover:bg-red-600/10 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-white border border-transparent hover:border-red-600/20',
   };
   
   const sizes = {
@@ -26,20 +28,24 @@ const Button = ({
     lg: 'px-8 py-4 text-lg',
   };
 
-  const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`;
+  const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${disabled || loading ? 'opacity-50 cursor-not-allowed' : ''} ${className}`;
 
   return (
     <button
       type={type}
       className={classes}
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || loading}
       {...props}
     >
-      <div className="flex items-center justify-center gap-2">
-        {icon && <span className="text-lg">{icon}</span>}
-        {children}
-      </div>
+      {loading ? (
+        <Loader2 size={20} className="animate-spin" />
+      ) : (
+        <>
+          {icon && <span className="flex items-center">{icon}</span>}
+          {children}
+        </>
+      )}
     </button>
   );
 };
